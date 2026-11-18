@@ -1,0 +1,19 @@
+{
+  "dataset": "ds005185",
+  "version": "1.0.2",
+  "max_download_bytes": 18000000000,
+  "max_disk_bytes": 20000000000,
+  "target_subjects": 14,
+  "minimum_subjects": 8,
+  "sessions_priority": ["001", "002", "003", "004"],
+  "sampling_rate": 100,
+  "filter_hz": [0.3, 35.0],
+  "line_frequency_hz": 50.0,
+  "epoch_seconds": 30,
+  "ear_derivation": "bilateral_reference",
+  "ear_channels": ["ELA", "ELB", "ELC", "ELT", "ELE", "ELI", "ERA", "ERB", "ERC", "ERT", "ERE", "ERI"],
+  "scalp_channels": ["M1", "F3", "C3", "O1", "M2", "F4", "C4", "O2"],
+  "line_noise_ratio_limit": 0.25,
+  "flat_std_uv": 0.01,
+  "extreme_abs_uv": 1000.0
+}

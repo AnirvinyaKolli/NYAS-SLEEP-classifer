@@ -1,0 +1,21 @@
+
+# Dataset and regenerable artifacts
+/data/
+*.set
+*.fdt
+*.edf
+*.npz
+*.parquet
+*.h5
+*.pkl
+*.joblib
+*.pt
+
+# Temporary/cache files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+*.tmp
