@@ -1,0 +1,508 @@
+{
+  "input_csv": "data/processed/ear_sleep_training/ear_sleep_training.csv",
+  "cohort_manifest": "data/processed/ear_sleep_training/manifest.json",
+  "cohort_subjects": [
+    "sub-001",
+    "sub-002",
+    "sub-003",
+    "sub-004",
+    "sub-008",
+    "sub-009",
+    "sub-011",
+    "sub-012",
+    "sub-017",
+    "sub-018"
+  ],
+  "heldout_recording": "sub-016:001",
+  "heldout_epochs": 690,
+  "label_encoding": {
+    "Wake": 0,
+    "N1": 1,
+    "N2": 2,
+    "N3": 3,
+    "REM": 4
+  },
+  "params": {
+    "objective": "multiclass",
+    "learning_rate": 0.05,
+    "n_estimators": 400,
+    "num_leaves": 15,
+    "min_child_samples": 50,
+    "colsample_bytree": 0.7,
+    "subsample": 0.8,
+    "subsample_freq": 1,
+    "reg_lambda": 1.0,
+    "class_weight": "balanced",
+    "random_state": 42,
+    "verbosity": -1,
+    "n_jobs": -1
+  },
+  "random_seed": 42,
+  "base_feature_columns": [
+    "mean_uv",
+    "median_uv",
+    "std_uv",
+    "rms_uv",
+    "peak_to_peak_uv",
+    "abs_q95_uv",
+    "skewness",
+    "kurtosis_excess",
+    "zero_crossing_rate_hz",
+    "line_length_uv_per_s",
+    "hjorth_activity_uv2",
+    "hjorth_mobility_hz",
+    "hjorth_complexity",
+    "delta_power_uv2",
+    "theta_power_uv2",
+    "alpha_power_uv2",
+    "sigma_power_uv2",
+    "beta_power_uv2",
+    "delta_relative_power",
+    "theta_relative_power",
+    "alpha_relative_power",
+    "sigma_relative_power",
+    "beta_relative_power",
+    "delta_beta_ratio",
+    "theta_alpha_ratio",
+    "spectral_entropy",
+    "spectral_peak_hz"
+  ],
+  "context_base_features": [
+    "std_uv",
+    "hjorth_activity_uv2",
+    "hjorth_mobility_hz",
+    "hjorth_complexity",
+    "delta_relative_power",
+    "theta_relative_power",
+    "alpha_relative_power",
+    "sigma_relative_power",
+    "beta_relative_power",
+    "delta_beta_ratio",
+    "theta_alpha_ratio"
+  ],
+  "context_lags_and_leads_epochs": [
+    1,
+    2,
+    4
+  ],
+  "context_rolling_window_epochs": 5,
+  "model_feature_columns": [
+    "mean_uv",
+    "median_uv",
+    "std_uv",
+    "rms_uv",
+    "peak_to_peak_uv",
+    "abs_q95_uv",
+    "skewness",
+    "kurtosis_excess",
+    "zero_crossing_rate_hz",
+    "line_length_uv_per_s",
+    "hjorth_activity_uv2",
+    "hjorth_mobility_hz",
+    "hjorth_complexity",
+    "delta_power_uv2",
+    "theta_power_uv2",
+    "alpha_power_uv2",
+    "sigma_power_uv2",
+    "beta_power_uv2",
+    "delta_relative_power",
+    "theta_relative_power",
+    "alpha_relative_power",
+    "sigma_relative_power",
+    "beta_relative_power",
+    "delta_beta_ratio",
+    "theta_alpha_ratio",
+    "spectral_entropy",
+    "spectral_peak_hz",
+    "std_uv_lag1",
+    "std_uv_lead1",
+    "std_uv_lag2",
+    "std_uv_lead2",
+    "std_uv_lag4",
+    "std_uv_lead4",
+    "std_uv_roll5_mean",
+    "std_uv_roll5_std",
+    "hjorth_activity_uv2_lag1",
+    "hjorth_activity_uv2_lead1",
+    "hjorth_activity_uv2_lag2",
+    "hjorth_activity_uv2_lead2",
+    "hjorth_activity_uv2_lag4",
+    "hjorth_activity_uv2_lead4",
+    "hjorth_activity_uv2_roll5_mean",
+    "hjorth_activity_uv2_roll5_std",
+    "hjorth_mobility_hz_lag1",
+    "hjorth_mobility_hz_lead1",
+    "hjorth_mobility_hz_lag2",
+    "hjorth_mobility_hz_lead2",
+    "hjorth_mobility_hz_lag4",
+    "hjorth_mobility_hz_lead4",
+    "hjorth_mobility_hz_roll5_mean",
+    "hjorth_mobility_hz_roll5_std",
+    "hjorth_complexity_lag1",
+    "hjorth_complexity_lead1",
+    "hjorth_complexity_lag2",
+    "hjorth_complexity_lead2",
+    "hjorth_complexity_lag4",
+    "hjorth_complexity_lead4",
+    "hjorth_complexity_roll5_mean",
+    "hjorth_complexity_roll5_std",
+    "delta_relative_power_lag1",
+    "delta_relative_power_lead1",
+    "delta_relative_power_lag2",
+    "delta_relative_power_lead2",
+    "delta_relative_power_lag4",
+    "delta_relative_power_lead4",
+    "delta_relative_power_roll5_mean",
+    "delta_relative_power_roll5_std",
+    "theta_relative_power_lag1",
+    "theta_relative_power_lead1",
+    "theta_relative_power_lag2",
+    "theta_relative_power_lead2",
+    "theta_relative_power_lag4",
+    "theta_relative_power_lead4",
+    "theta_relative_power_roll5_mean",
+    "theta_relative_power_roll5_std",
+    "alpha_relative_power_lag1",
+    "alpha_relative_power_lead1",
+    "alpha_relative_power_lag2",
+    "alpha_relative_power_lead2",
+    "alpha_relative_power_lag4",
+    "alpha_relative_power_lead4",
+    "alpha_relative_power_roll5_mean",
+    "alpha_relative_power_roll5_std",
+    "sigma_relative_power_lag1",
+    "sigma_relative_power_lead1",
+    "sigma_relative_power_lag2",
+    "sigma_relative_power_lead2",
+    "sigma_relative_power_lag4",
+    "sigma_relative_power_lead4",
+    "sigma_relative_power_roll5_mean",
+    "sigma_relative_power_roll5_std",
+    "beta_relative_power_lag1",
+    "beta_relative_power_lead1",
+    "beta_relative_power_lag2",
+    "beta_relative_power_lead2",
+    "beta_relative_power_lag4",
+    "beta_relative_power_lead4",
+    "beta_relative_power_roll5_mean",
+    "beta_relative_power_roll5_std",
+    "delta_beta_ratio_lag1",
+    "delta_beta_ratio_lead1",
+    "delta_beta_ratio_lag2",
+    "delta_beta_ratio_lead2",
+    "delta_beta_ratio_lag4",
+    "delta_beta_ratio_lead4",
+    "delta_beta_ratio_roll5_mean",
+    "delta_beta_ratio_roll5_std",
+    "theta_alpha_ratio_lag1",
+    "theta_alpha_ratio_lead1",
+    "theta_alpha_ratio_lag2",
+    "theta_alpha_ratio_lead2",
+    "theta_alpha_ratio_lag4",
+    "theta_alpha_ratio_lead4",
+    "theta_alpha_ratio_roll5_mean",
+    "theta_alpha_ratio_roll5_std"
+  ],
+  "time_in_night_enabled": false,
+  "per_night_scaling": "median/IQR on rows present in the cohort CSV",
+  "artifact_epoch_limitation": "The cohort builder had already removed artifact/unscored and signal-invalid epochs. They are therefore unavailable to the per-night scaler; counts are recorded from its manifest.",
+  "dropped_epoch_counts_by_night": {
+    "sub-001:001": {
+      "source_epochs": 950,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 8,
+      "signal_invalid_epochs_dropped_during_cohort_build": 50,
+      "usable_epochs_in_model_input": 892,
+      "cohort_build_status": "saved"
+    },
+    "sub-001:002": {
+      "source_epochs": 778,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 2,
+      "signal_invalid_epochs_dropped_during_cohort_build": 60,
+      "usable_epochs_in_model_input": 716,
+      "cohort_build_status": "saved"
+    },
+    "sub-001:003": {
+      "source_epochs": 1033,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 42,
+      "usable_epochs_in_model_input": 991,
+      "cohort_build_status": "saved"
+    },
+    "sub-001:004": {
+      "source_epochs": 873,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 37,
+      "signal_invalid_epochs_dropped_during_cohort_build": 52,
+      "usable_epochs_in_model_input": 791,
+      "cohort_build_status": "saved"
+    },
+    "sub-002:001": {
+      "source_epochs": 1001,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 113,
+      "signal_invalid_epochs_dropped_during_cohort_build": 162,
+      "usable_epochs_in_model_input": 761,
+      "cohort_build_status": "saved"
+    },
+    "sub-002:002": {
+      "source_epochs": 1027,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 454,
+      "signal_invalid_epochs_dropped_during_cohort_build": 180,
+      "usable_epochs_in_model_input": 507,
+      "cohort_build_status": "saved"
+    },
+    "sub-002:003": {
+      "source_epochs": 945,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 72,
+      "signal_invalid_epochs_dropped_during_cohort_build": 168,
+      "usable_epochs_in_model_input": 740,
+      "cohort_build_status": "saved"
+    },
+    "sub-002:004": {
+      "source_epochs": 1009,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 3,
+      "signal_invalid_epochs_dropped_during_cohort_build": 122,
+      "usable_epochs_in_model_input": 886,
+      "cohort_build_status": "saved"
+    },
+    "sub-003:001": {
+      "source_epochs": 1068,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 186,
+      "usable_epochs_in_model_input": 882,
+      "cohort_build_status": "saved"
+    },
+    "sub-003:002": {
+      "source_epochs": 979,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 11,
+      "signal_invalid_epochs_dropped_during_cohort_build": 118,
+      "usable_epochs_in_model_input": 860,
+      "cohort_build_status": "saved"
+    },
+    "sub-003:003": {
+      "source_epochs": 893,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 33,
+      "signal_invalid_epochs_dropped_during_cohort_build": 135,
+      "usable_epochs_in_model_input": 740,
+      "cohort_build_status": "saved"
+    },
+    "sub-003:004": {
+      "source_epochs": 0,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 0,
+      "usable_epochs_in_model_input": 0,
+      "cohort_build_status": "skipped"
+    },
+    "sub-004:001": {
+      "source_epochs": 1009,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 3,
+      "signal_invalid_epochs_dropped_during_cohort_build": 79,
+      "usable_epochs_in_model_input": 928,
+      "cohort_build_status": "saved"
+    },
+    "sub-004:002": {
+      "source_epochs": 1104,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 3,
+      "signal_invalid_epochs_dropped_during_cohort_build": 84,
+      "usable_epochs_in_model_input": 1020,
+      "cohort_build_status": "saved"
+    },
+    "sub-004:003": {
+      "source_epochs": 970,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 83,
+      "usable_epochs_in_model_input": 887,
+      "cohort_build_status": "saved"
+    },
+    "sub-004:004": {
+      "source_epochs": 0,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 0,
+      "usable_epochs_in_model_input": 0,
+      "cohort_build_status": "skipped"
+    },
+    "sub-008:001": {
+      "source_epochs": 1017,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 4,
+      "signal_invalid_epochs_dropped_during_cohort_build": 98,
+      "usable_epochs_in_model_input": 916,
+      "cohort_build_status": "saved"
+    },
+    "sub-008:002": {
+      "source_epochs": 861,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 143,
+      "signal_invalid_epochs_dropped_during_cohort_build": 244,
+      "usable_epochs_in_model_input": 595,
+      "cohort_build_status": "saved"
+    },
+    "sub-008:003": {
+      "source_epochs": 0,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 0,
+      "usable_epochs_in_model_input": 0,
+      "cohort_build_status": "skipped"
+    },
+    "sub-008:004": {
+      "source_epochs": 1049,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 105,
+      "usable_epochs_in_model_input": 944,
+      "cohort_build_status": "saved"
+    },
+    "sub-009:001": {
+      "source_epochs": 1048,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 71,
+      "signal_invalid_epochs_dropped_during_cohort_build": 118,
+      "usable_epochs_in_model_input": 889,
+      "cohort_build_status": "saved"
+    },
+    "sub-009:002": {
+      "source_epochs": 1021,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 58,
+      "signal_invalid_epochs_dropped_during_cohort_build": 104,
+      "usable_epochs_in_model_input": 883,
+      "cohort_build_status": "saved"
+    },
+    "sub-009:003": {
+      "source_epochs": 986,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 39,
+      "signal_invalid_epochs_dropped_during_cohort_build": 52,
+      "usable_epochs_in_model_input": 909,
+      "cohort_build_status": "saved"
+    },
+    "sub-009:004": {
+      "source_epochs": 994,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 28,
+      "signal_invalid_epochs_dropped_during_cohort_build": 162,
+      "usable_epochs_in_model_input": 814,
+      "cohort_build_status": "saved"
+    },
+    "sub-011:001": {
+      "source_epochs": 1172,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 134,
+      "signal_invalid_epochs_dropped_during_cohort_build": 122,
+      "usable_epochs_in_model_input": 946,
+      "cohort_build_status": "saved"
+    },
+    "sub-011:002": {
+      "source_epochs": 920,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 13,
+      "signal_invalid_epochs_dropped_during_cohort_build": 97,
+      "usable_epochs_in_model_input": 818,
+      "cohort_build_status": "saved"
+    },
+    "sub-011:003": {
+      "source_epochs": 1171,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 10,
+      "signal_invalid_epochs_dropped_during_cohort_build": 92,
+      "usable_epochs_in_model_input": 1074,
+      "cohort_build_status": "saved"
+    },
+    "sub-011:004": {
+      "source_epochs": 0,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 0,
+      "usable_epochs_in_model_input": 0,
+      "cohort_build_status": "skipped"
+    },
+    "sub-012:001": {
+      "source_epochs": 1042,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 12,
+      "signal_invalid_epochs_dropped_during_cohort_build": 130,
+      "usable_epochs_in_model_input": 912,
+      "cohort_build_status": "saved"
+    },
+    "sub-012:002": {
+      "source_epochs": 954,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 6,
+      "signal_invalid_epochs_dropped_during_cohort_build": 87,
+      "usable_epochs_in_model_input": 866,
+      "cohort_build_status": "saved"
+    },
+    "sub-012:003": {
+      "source_epochs": 960,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 1,
+      "signal_invalid_epochs_dropped_during_cohort_build": 135,
+      "usable_epochs_in_model_input": 825,
+      "cohort_build_status": "saved"
+    },
+    "sub-012:004": {
+      "source_epochs": 1069,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 1,
+      "signal_invalid_epochs_dropped_during_cohort_build": 71,
+      "usable_epochs_in_model_input": 998,
+      "cohort_build_status": "saved"
+    },
+    "sub-017:001": {
+      "source_epochs": 817,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 15,
+      "signal_invalid_epochs_dropped_during_cohort_build": 333,
+      "usable_epochs_in_model_input": 483,
+      "cohort_build_status": "saved"
+    },
+    "sub-017:002": {
+      "source_epochs": 981,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 19,
+      "signal_invalid_epochs_dropped_during_cohort_build": 199,
+      "usable_epochs_in_model_input": 772,
+      "cohort_build_status": "saved"
+    },
+    "sub-017:003": {
+      "source_epochs": 904,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 331,
+      "usable_epochs_in_model_input": 573,
+      "cohort_build_status": "saved"
+    },
+    "sub-017:004": {
+      "source_epochs": 1025,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 20,
+      "signal_invalid_epochs_dropped_during_cohort_build": 145,
+      "usable_epochs_in_model_input": 876,
+      "cohort_build_status": "saved"
+    },
+    "sub-018:001": {
+      "source_epochs": 1044,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 189,
+      "signal_invalid_epochs_dropped_during_cohort_build": 265,
+      "usable_epochs_in_model_input": 771,
+      "cohort_build_status": "saved"
+    },
+    "sub-018:002": {
+      "source_epochs": 828,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 88,
+      "usable_epochs_in_model_input": 740,
+      "cohort_build_status": "saved"
+    },
+    "sub-018:003": {
+      "source_epochs": 959,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 851,
+      "usable_epochs_in_model_input": 108,
+      "cohort_build_status": "saved"
+    },
+    "sub-018:004": {
+      "source_epochs": 865,
+      "artifact_or_unscored_label_epochs_dropped_during_cohort_build": 0,
+      "signal_invalid_epochs_dropped_during_cohort_build": 157,
+      "usable_epochs_in_model_input": 708,
+      "cohort_build_status": "saved"
+    }
+  },
+  "fold_subjects": [
+    "sub-001",
+    "sub-002",
+    "sub-003",
+    "sub-004",
+    "sub-008",
+    "sub-009",
+    "sub-011",
+    "sub-012",
+    "sub-017",
+    "sub-018"
+  ],
+  "cohort_rows_used": 29021,
+  "cohort_rows_available": 29021,
+  "warning_top3_amplitude_features": [
+    "beta_power_uv2"
+  ]
+}
