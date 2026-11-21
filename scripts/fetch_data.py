@@ -1,63 +1,90 @@
 #!/usr/bin/env python3
-"""Inventory and explicitly fetch a chosen subset of ds005185 (never the full set)."""
+"""Fetch selected ds005185 PSG recordings and their Scoring1 labels."""
 from __future__ import annotations
 
 import argparse
-import sys
+import json
+import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-from src.sleep_pipeline import (CACHE, CONFIG, DATA, META, RAW, RESULTS, candidates_and_sizes,
-                                download, download_manifest_text, recording_keys, select_cohort,
-                                write_csv)
+CONFIG = json.loads((ROOT / "config.json").read_text())
+BUCKET = "s3://openneuro.org/ds005185/"
 
 
-def main():
-    parser = argparse.ArgumentParser()
+def inventory() -> dict[str, int]:
+    result = subprocess.run(
+        ["aws", "s3", "ls", "--no-sign-request", "--recursive", BUCKET],
+        capture_output=True, text=True, check=True,
+    )
+    sizes = {}
+    for line in result.stdout.splitlines():
+        match = re.match(r"\s*\d{4}-\d\d-\d\d\s+\d\d:\d\d:\d\d\s+(\d+)\s+(.+)$", line)
+        if match:
+            sizes[match.group(2)] = int(match.group(1))
+    return sizes
+
+
+def download(key: str, target: Path, expected: int, downloaded: int) -> int:
+    if target.exists() and target.stat().st_size == expected:
+        print(f"Already present: {target.relative_to(ROOT)}")
+        return downloaded
+    if downloaded + expected > int(CONFIG["max_download_bytes"]):
+        raise RuntimeError(f"Download cap reached before {key}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    result = subprocess.run(
+        ["aws", "s3", "cp", "--no-sign-request", f"s3://openneuro.org/{key}", str(target)],
+        capture_output=True, text=True,
+    )
+    actual = target.stat().st_size if target.exists() else 0
+    if result.returncode or actual != expected:
+        target.unlink(missing_ok=True)
+        raise IOError(f"Incomplete download {key}: expected {expected}, got {actual}. {result.stderr[-500:]}")
+    print(f"Downloaded {target.relative_to(ROOT)} ({actual:,} bytes)")
+    return downloaded + actual
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Fetch inputs for in-ear EEG sleep modeling")
     parser.add_argument("--recording", action="append", default=[], metavar="SUBJECT:SESSION",
-                        help="explicit recording selector, e.g. sub-016:001 (repeatable)")
-    parser.add_argument("--download-raw", action="store_true", help="download only explicitly selected .set/.fdt files")
-    parser.add_argument("--download-sidecars", action="store_true", help="download only the listed small sidecars")
-    parser.add_argument("--manifest", action="store_true", help="write data_manifest.csv from the public inventory")
+                        help="recording selector; repeat to fetch a batch")
     args = parser.parse_args()
-    recordings, sizes = candidates_and_sizes()
-    for r in recordings:
-        if r["session"] == "001":
-            print(f"INVENTORY {r['subject']} ses-{r['session']} .set={r['set'][1]} .fdt={r['fdt'][1]} pair={r['raw_bytes']} bytes")
-    if args.manifest:
-        write_csv(ROOT / "data_manifest.csv", download_manifest_text([r for r in recordings if r["session"] == "001"], sizes))
-        print(f"Wrote manifest with all ses-001 candidates; sub-016 is the only confirmed-readable recording.")
-    selected_ids = set(args.recording)
-    selected = [r for r in recordings if f"{r['subject']}:{r['session']}" in selected_ids]
-    available = {f"{r['subject']}:{r['session']}" for r in selected}
-    missing = selected_ids - available
+    recordings = args.recording or ["sub-016:001"]
+    files = {}
+    for recording in recordings:
+        try:
+            subject, session = recording.split(":", 1)
+            if not re.fullmatch(r"sub-\d+", subject) or not re.fullmatch(r"\d{3}", session):
+                raise ValueError
+        except ValueError as exc:
+            raise SystemExit("Use --recording SUBJECT:SESSION, e.g. sub-016:001") from exc
+        stem = f"{subject}_ses-{session}_task-sleep_acq-PSG_eeg"
+        prefix = f"ds005185/{subject}/ses-{session}/eeg/"
+        recording_files = (
+            (prefix + stem + ".set", ROOT / "data/raw" / (stem + ".set")),
+            (prefix + stem + ".fdt", ROOT / "data/raw" / (stem + ".fdt")),
+            (prefix + f"{subject}_ses-{session}_task-sleep_acq-scoring1_events.tsv",
+             ROOT / "data/metadata" / f"{subject}_ses-{session}_task-sleep_acq-scoring1_events.tsv"),
+        )
+        files.update({key: target for key, target in recording_files})
+    files["ds005185/task-sleep_events.json"] = ROOT / "data/metadata/task-sleep_events.json"
+
+    sizes = inventory()
+    missing = [key for key in files if key not in sizes]
     if missing:
-        raise SystemExit(f"not found in ses-001..004 inventory: {sorted(missing)}")
-    if args.download_raw and not selected:
-        raise SystemExit("Refusing raw downloads without an explicit --recording subject:session selector")
-    meter = {"downloaded_bytes": 0, "peak_disk_bytes": 0}
-    for r in selected:
-        if args.download_sidecars:
-            sidecars = {
-                "ds005185/dataset_description.json": META / "dataset_description.json",
-                "ds005185/participants.tsv": META / "participants.tsv",
-                "ds005185/task-sleep_events.json": META / "task-sleep_events.json",
-                "ds005185/task-sleep_acq-scoring_events.json": META / "task-sleep_acq-scoring_events.json",
-                "ds005185/acq-PSG_channels.tsv": META / "acq-PSG_channels.tsv",
-                **{key: META / Path(key).name for key in recording_keys(r).values()},
-            }
-            for key, target in sidecars.items():
-                print(f"SIDECAR INVENTORY {key} {sizes[key]} bytes")
-            for key, target in sidecars.items():
-                download(key, target, sizes[key], meter)
-        if args.download_raw:
-            for ext in ("set", "fdt"):
-                key, n = r[ext]
-                download(key, RAW / Path(key).name, n, meter)
-    if not args.download_raw and not args.download_sidecars:
-        print("Inventory only. To fetch the smoke test, pass --recording sub-016:001 --download-sidecars --download-raw.")
-    print(f"Downloaded this invocation: {meter['downloaded_bytes']} bytes; peak data/results usage: {meter['peak_disk_bytes']} bytes")
+        raise FileNotFoundError("Recording or label metadata missing from inventory: " + ", ".join(missing))
+    needed_bytes = sum(sizes[key] for key, target in files.items()
+                       if not target.exists() or target.stat().st_size != sizes[key])
+    if needed_bytes > int(CONFIG["max_download_bytes"]):
+        raise RuntimeError(
+            f"This batch needs {needed_bytes:,} bytes, over the "
+            f"{int(CONFIG['max_download_bytes']):,}-byte cap. Split it into smaller batches."
+        )
+    downloaded = 0
+    for key, target in files.items():
+        downloaded = download(key, target, sizes[key], downloaded)
+    print(f"Fetch complete for {len(recordings)} recording(s). Downloaded this run: {downloaded:,} bytes.")
 
 
 if __name__ == "__main__":

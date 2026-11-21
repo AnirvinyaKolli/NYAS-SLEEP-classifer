@@ -1,0 +1,96 @@
+{
+  "recording": "sub-016:001",
+  "sampling_rate_hz": 100.0,
+  "original_sampling_rate_hz": 500.0,
+  "signals": {
+    "in_ear": {
+      "name": "In-ear EEG (ELE\u2212ERE)",
+      "summary": {
+        "epochs_compared": 690,
+        "errors": 566,
+        "error_percent": 82.02898550724638,
+        "accuracy_percent": 17.971014492753625,
+        "weakest_stage": "REM",
+        "weakest_stage_error_percent": 100.0,
+        "by_stage": {
+          "Wake": {
+            "epochs": 199,
+            "errors": 96,
+            "error_percent": 48.24120603015075
+          },
+          "REM": {
+            "epochs": 115,
+            "errors": 115,
+            "error_percent": 100.0
+          },
+          "N1": {
+            "epochs": 20,
+            "errors": 3,
+            "error_percent": 15.0
+          },
+          "N2": {
+            "epochs": 205,
+            "errors": 201,
+            "error_percent": 98.04878048780488
+          },
+          "N3": {
+            "epochs": 151,
+            "errors": 151,
+            "error_percent": 100.0
+          }
+        }
+      },
+      "yasa_stage_counts": {
+        "N1": 564,
+        "N2": 10,
+        "WAKE": 127
+      }
+    },
+    "scalp_psg": {
+      "name": "Scalp PSG (C3\u2212M2)",
+      "summary": {
+        "epochs_compared": 690,
+        "errors": 83,
+        "error_percent": 12.028985507246377,
+        "accuracy_percent": 87.97101449275362,
+        "weakest_stage": "N1",
+        "weakest_stage_error_percent": 45.0,
+        "by_stage": {
+          "Wake": {
+            "epochs": 199,
+            "errors": 13,
+            "error_percent": 6.532663316582915
+          },
+          "REM": {
+            "epochs": 115,
+            "errors": 25,
+            "error_percent": 21.73913043478261
+          },
+          "N1": {
+            "epochs": 20,
+            "errors": 9,
+            "error_percent": 45.0
+          },
+          "N2": {
+            "epochs": 205,
+            "errors": 36,
+            "error_percent": 17.560975609756095
+          },
+          "N3": {
+            "epochs": 151,
+            "errors": 0,
+            "error_percent": 0.0
+          }
+        }
+      },
+      "yasa_stage_counts": {
+        "N1": 27,
+        "N2": 198,
+        "N3": 171,
+        "REM": 109,
+        "WAKE": 196
+      }
+    }
+  },
+  "ear_minus_scalp_error_percentage_points": 70.0
+}
